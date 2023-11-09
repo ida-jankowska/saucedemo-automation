@@ -1,5 +1,5 @@
 import { type Page, expect } from '@playwright/test';
-import { SAUCE_DEMO_ADDRESS } from '../config/environmentParameters';
+import { SAUCE_DEMO_ADDRESS, pagesURLs } from '../../config/environmentParameters';
 import { locators } from './homePageLocators';
 
 export class HomePage {
@@ -9,12 +9,12 @@ export class HomePage {
     this.page = page;
   }
 
-  buttonsText = {
+  buttonsText : { [key: string]: string } = {
     addToCartBtn: 'Add To Cart',
     removeBtn: 'Remove'
 }
 
-  async checkIfSecondaryHeaderIsVisible() {
+  async checkIfSecondaryHeaderIsVisible(): Promise<boolean> {
     const secondaryHeader = this.page.locator(locators.secondaryHeader);
     return await secondaryHeader.isVisible();
   }
@@ -24,7 +24,7 @@ export class HomePage {
     await this.page.locator(locators.logoutButton).click();
   }
 
-  async countInventoryItems() {
+  async countInventoryItems() : Promise<number> {
     const inventoryItems = await this.page.$$(locators.inventoryItem);
     expect(inventoryItems).not.toBeNull();
     return inventoryItems.length;
@@ -50,5 +50,10 @@ export class HomePage {
   async getNumberOfItemsAddedToCart() {
     const itemsInCartCounter = this.page.locator(locators.shoppingCartBadge);
     return await itemsInCartCounter?.textContent();
+  }
+
+  async goToShoppingCart() {
+    await this.page.locator(locators.shoppingCartIcon).click();
+    await this.page.waitForURL(SAUCE_DEMO_ADDRESS.concat(pagesURLs.cartPageURL));
   }
 }

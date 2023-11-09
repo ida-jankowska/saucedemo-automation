@@ -1,5 +1,5 @@
 import { type Page } from '@playwright/test';
-import { SAUCE_DEMO_ADDRESS } from '../config/environmentParameters';
+import { SAUCE_DEMO_ADDRESS, pagesURLs } from '../../config/environmentParameters';
 import { locators } from './loginPageLocators';
 
 export class LoginPage {
@@ -20,15 +20,15 @@ export class LoginPage {
   }
 
   async checkIfLoginFormIsVisible() {
-    await this.page.locator(locators.loginForm).isVisible();;
+    await this.page.locator(locators.loginForm).isVisible();
   }
 
   async confirmValidLogin() {
-    await this.page.waitForLoadState(); 
-    await this.page.waitForURL('**/inventory.html');
+    await this.page.waitForLoadState();
+    await this.page.waitForURL(SAUCE_DEMO_ADDRESS.concat(pagesURLs.homePageURL));
   }
 
-  async isErrorMessageVisible() {
+  async isErrorMessageVisible(): Promise<boolean> {
     const errorMessage = this.page.locator(locators.errorMessage);
     return await errorMessage.isVisible();
   }
