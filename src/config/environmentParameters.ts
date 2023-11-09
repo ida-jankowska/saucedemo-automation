@@ -1,3 +1,8 @@
 const SAUCE_DEMO_ADDRESS : string = 'https://www.saucedemo.com/';
 
-export { SAUCE_DEMO_ADDRESS };
+const pagesURLs: { [key: string]: string } = {
+    homePageURL: 'inventory.html',
+    cartPageURL: 'cart.html'
+}
+
+export { SAUCE_DEMO_ADDRESS, pagesURLs };
